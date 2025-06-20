@@ -1,0 +1,77 @@
+{
+  "network": {
+    "name": "anvil",
+    "chainId": 31337,
+    "url": "http://127.0.0.1:8545"
+  },
+  "prefix": "anvil_",
+  "accounts": {
+    "deployer": "0xbA5C24084c98A42974f324F377c87Ad44900648E",
+    "keeper": "0x3a683E750b98A372f7d7638532afe8877fE3FF2D"
+  },
+  "gas": {
+    "gasPrice": "20000000000",
+    "gasLimit": 15000000,
+    "fallbackGasPrice": "20000000000"
+  },
+  "tokens": [
+    {
+      "name": "Capybara Token",
+      "symbol": "CAPY",
+      "decimals": 6,
+      "initialPrice": "1",
+      "mintAmount": "10000"
+    },
+    {
+      "name": "Axolotl Token",
+      "symbol": "AXOL",
+      "decimals": 6,
+      "initialPrice": "1",
+      "mintAmount": "10000"
+    },
+    {
+      "name": "Quokka Coin",
+      "symbol": "QUOK",
+      "decimals": 8,
+      "initialPrice": "45000",
+      "mintAmount": "10000"
+    },
+    {
+      "name": "Pangolin Token",
+      "symbol": "PANG",
+      "decimals": 18,
+      "initialPrice": "15",
+      "mintAmount": "10000"
+    },
+    {
+      "name": "Narwhal Token",
+      "symbol": "NARW",
+      "decimals": 18,
+      "initialPrice": "25",
+      "mintAmount": "10000"
+    }
+  ],
+  "prices": {
+    "ETH": "2500"
+  },
+  "liquidity": {
+    "ethAmount": "100",
+    "tokenMultiplier": 1.0
+  },
+  "features": {
+    "emergencyStop": true,
+    "flashLoanProtection": true,
+    "circuitBreaker": true,
+    "stopLossOrders": true,
+    "selfExecution": true,
+    "publicLiquidation": true,
+    "routerCentric": true,
+    "upgradeable": true,
+    "transparentProxy": true
+  },
+  "deployment": {
+    "createConfigDir": true,
+    "saveAfterEachStep": true,
+    "validateDeployment": true
+  }
+}

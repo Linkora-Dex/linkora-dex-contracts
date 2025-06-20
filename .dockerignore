@@ -1,0 +1,15 @@
+node_modules
+npm-debug.log
+.git
+.gitignore
+doc/readme.md
+.env
+.nyc_output
+coverage
+.nyc_output
+.coverage_artifacts
+.coverage_cache
+cache
+artifacts/contracts/**/*.dbg.json
+.DS_Store
+*.log

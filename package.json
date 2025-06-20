@@ -1,0 +1,61 @@
+{
+  "name": "dex-smart-contracts",
+  "version": "1.0.0",
+  "license": "MIT",
+  "description": "Decentralized Exchange with Margin Trading",
+  "scripts": {
+    "compile": "hardhat compile",
+    "check-balance": "hardhat run scripts/check-balance.js --network anvil",
+
+    "prod:infrastructure": "hardhat run scripts/prod_deploy-infrastructure.js --network anvil",
+    "prod:deploy:config": "hardhat run scripts/prod_deploy-infrastructure.js ./config/deployment-config.json --network anvil && hardhat run scripts/prod_setup-tokens.js ./config/deployment-config.json --network anvil && hardhat run scripts/prod_create-pools.js ./config/deployment-config.json --network anvil",
+    "prod:tokens": "hardhat run scripts/prod_setup-tokens.js --network anvil",
+    "prod:pools": "hardhat run scripts/prod_create-pools.js --network anvil",
+
+
+
+    "deploy:governance-token": "DEPLOY_COMMAND=deploy hardhat run scripts/deploy-governance-token.js --network anvil",
+    "verify:governance-token": "DEPLOY_COMMAND=verify hardhat run scripts/deploy-governance-token.js --network anvil",
+    "setup:token-distribution": "DEPLOY_COMMAND=setup-distribution hardhat run scripts/deploy-governance-token.js --network anvil",
+    "price-diagnostics": "hardhat run scripts/priceGeneratorDiagnostics.js --network anvil",
+    "price-generator-anvil": "hardhat run scripts/priceGenerator.js --network anvil",
+    "keeper:upgradeable-anvil": "hardhat run scripts/keeper-upgradeable.js --network anvil",
+    "trading-demo-anvil": "hardhat run scripts/tradingDemo.js --network anvil",
+    "verify:upgrades": "hardhat run scripts/verify-upgrades.js",
+    "validate:storage": "hardhat run scripts/validate-storage.js",
+    "unpause": "hardhat run scripts/unpause.js --network anvil",
+    "pause": "hardhat run scripts/pause.js --network anvil",
+    "toggle-pause": "hardhat run scripts/toggle-pause.js --network anvil",
+    "cancel": "node scripts/cancelOrderSimple.js --network anvil",
+    "cancel-1": "node scripts/cancelOrderSimple.js 1 --network anvil",
+    "cancel-2": "node scripts/cancelOrderSimple.js 2 --network anvil",
+    "cancel-all": "node scripts/cancelOrderSimple.js all --network anvil",
+    "list-orders": "node scripts/cancelOrderSimple.js list --network anvil",
+    "cancel-order": "node scripts/cancelOrderSimple.js --network anvil",
+
+
+
+    "test:integration": "hardhat test test/UpgradeableIntegration.test.js",
+    "test:upgrade-simulation": "hardhat test test/UpgradeSimulation.test.js",
+    "test:full-upgradeable": "hardhat test test/FullUpgradeableTest.test.js",
+    "coverage": "hardhat coverage",
+    "node": "hardhat node",
+    "clean": "hardhat clean"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-chai-matchers": "^2.0.2",
+    "@nomicfoundation/hardhat-ethers": "^3.0.5",
+    "@openzeppelin/contracts": "^4.9.3",
+    "@openzeppelin/contracts-upgradeable": "^4.9.3",
+    "@openzeppelin/hardhat-upgrades": "^2.4.3",
+    "chai": "^4.3.10",
+    "dotenv": "^16.5.0",
+    "ethers": "^6.8.1",
+    "hardhat": "^2.19.2",
+    "hardhat-gas-reporter": "^1.0.9",
+    "solidity-coverage": "^0.8.5"
+  },
+  "dependencies": {
+    "web3": "^4.2.2"
+  }
+}

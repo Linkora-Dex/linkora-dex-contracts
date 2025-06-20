@@ -1,0 +1,39 @@
+{
+  "name": "Custom DEX Token",
+  "symbol": "CDEX",
+  "address": "0xcF901e2ba393f527eea8eF68a48C92236492E9E3",
+  "deployer": "0xbA5C24084c98A42974f324F377c87Ad44900648E",
+  "network": "anvil",
+  "maxSupply": "10000000",
+  "initialMint": "1000000.0",
+  "exchangeName": "My Custom DEX",
+  "website": "https://mydex.example.com",
+  "governance": {
+    "proposalThreshold": "10000",
+    "votingPeriod": 604800,
+    "executionDelay": 172800,
+    "quorum": "100000"
+  },
+  "discounts": [
+    {
+      "threshold": "1000",
+      "discount": 200,
+      "name": "Bronze",
+      "premium": false
+    },
+    {
+      "threshold": "10000",
+      "discount": 500,
+      "name": "Silver",
+      "premium": false
+    },
+    {
+      "threshold": "50000",
+      "discount": 1000,
+      "name": "Gold",
+      "premium": true
+    }
+  ],
+  "deployedAt": "2025-06-19T18:00:41.062Z",
+  "contractType": "GovernanceToken"
+}

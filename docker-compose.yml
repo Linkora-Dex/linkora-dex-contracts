@@ -1,0 +1,91 @@
+version: '3.8'
+
+services:
+  hardhat-node:
+    build: .
+    container_name: dex-hardhat-node
+    ports:
+      - "8545:8545"
+      - "8546:8546"
+    volumes:
+      - ./:/app
+      - node_modules:/app/node_modules
+    environment:
+      - NODE_ENV=development
+    networks:
+      - dex-network
+    command: npm run node
+    restart: unless-stopped
+
+  dex-deployer:
+    build: .
+    container_name: dex-deployer
+    depends_on:
+      - hardhat-node
+    volumes:
+      - ./:/app
+      - node_modules:/app/node_modules
+    environment:
+      - NODE_ENV=development
+    networks:
+      - dex-network
+    profiles:
+      - deploy
+    command: sh -c "sleep 10 && npm run full-deploy"
+
+  dex-demo:
+    build: .
+    container_name: dex-demo
+    depends_on:
+      - hardhat-node
+    volumes:
+      - ./:/app
+      - node_modules:/app/node_modules
+    environment:
+      - NODE_ENV=development
+    networks:
+      - dex-network
+    profiles:
+      - demo
+    command: sh -c "sleep 15 && npm run trading-demo"
+
+  price-generator:
+    build: .
+    container_name: dex-price-generator
+    depends_on:
+      - hardhat-node
+    volumes:
+      - ./:/app
+      - node_modules:/app/node_modules
+    environment:
+      - NODE_ENV=development
+    networks:
+      - dex-network
+    profiles:
+      - services
+    command: sh -c "sleep 20 && npm run price-generator"
+    restart: unless-stopped
+
+  keeper:
+    build: .
+    container_name: dex-keeper
+    depends_on:
+      - hardhat-node
+    volumes:
+      - ./:/app
+      - node_modules:/app/node_modules
+    environment:
+      - NODE_ENV=development
+    networks:
+      - dex-network
+    profiles:
+      - services
+    command: sh -c "sleep 25 && npm run keeper"
+    restart: unless-stopped
+
+volumes:
+  node_modules:
+
+networks:
+  dex-network:
+    driver: bridge
