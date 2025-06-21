@@ -15,6 +15,12 @@ npm run compile
 npm run node
 
 # Deploy system (in new terminal)
+npm run prod:infrastructure
+npm run prod:tokens
+npm run prod:pools
+
+or
+
 npm run prod:deploy:config
 
 # Start services

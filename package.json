@@ -8,10 +8,12 @@
     "check-balance": "hardhat run scripts/check-balance.js --network anvil",
 
     "prod:infrastructure": "hardhat run scripts/prod_deploy-infrastructure.js --network anvil",
-    "prod:deploy:config": "hardhat run scripts/prod_deploy-infrastructure.js ./config/deployment-config.json --network anvil && hardhat run scripts/prod_setup-tokens.js ./config/deployment-config.json --network anvil && hardhat run scripts/prod_create-pools.js ./config/deployment-config.json --network anvil",
     "prod:tokens": "hardhat run scripts/prod_setup-tokens.js --network anvil",
     "prod:pools": "hardhat run scripts/prod_create-pools.js --network anvil",
 
+    "infoPool": "hardhat run scripts/infoPool.js --network anvil",
+
+    "prod:deploy:config": "hardhat run scripts/prod_deploy-infrastructure.js ./config/deployment-config.json --network anvil && hardhat run scripts/prod_setup-tokens.js ./config/deployment-config.json --network anvil && hardhat run scripts/prod_create-pools.js ./config/deployment-config.json --network anvil",
 
 
     "deploy:governance-token": "DEPLOY_COMMAND=deploy hardhat run scripts/deploy-governance-token.js --network anvil",

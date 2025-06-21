@@ -6,32 +6,32 @@
   },
   "prefix": "anvil_",
   "architecture": "upgradeable-router-centric",
-  "timestamp": "2025-06-19T16:05:00.056Z",
+  "timestamp": "2025-06-21T21:14:06.877Z",
   "contracts": {
-    "AccessControl": "0x0f22d3212069217fe8095Cc38cD67f8f2435aAb7",
-    "ReentrancyGuard": "0xB2BCb8850D30EC2bFA8308C312A03f5350BCA548",
-    "PnLCalculator": "0x7f4B60F16bB12a4aA504aD1616F06622d2aC73b2",
-    "PoolLibrary": "0xFc943DF08B99Ef4cdb1f98856755e629bB535eeF",
-    "LiquidityLibrary": "0x4325DC7AF675428d2eAb2Ff058bb00cFe8761bc7",
-    "TradingLibrary": "0xb75a9B31d47d6daBD9195E82Ed4b22eD1cafEd3D",
-    "RouterLibrary": "0xCa962d85e34D288eCdaBA9574F81a4248aA7Ff12",
-    "Oracle": "0xAe4F318e0407317c43d2f57004f533C815B0d07f",
-    "Pool": "0x349172429BDB675475D729eA21480945e70e87cC",
-    "Trading": "0x27bE11d1226bd06f5735bcb8A2bb22490b534C24",
-    "Router": "0xedcd4dB1FBf23427e2ffFEFb754e171865899ed3",
-    "TradingEvents": "0xf25715c26B0B4a1048FE541DB8fB5076B53849B1"
+    "AccessControl": "0x5A6e2C6DC6707494Dc63c59Ce9728E522667AE28",
+    "ReentrancyGuard": "0x57b649C0f15D47F8b58c9301D028345B197cf7B9",
+    "PnLCalculator": "0x36Eb37D028A77F1Eb530038A11a8CbF1A7E78541",
+    "PoolLibrary": "0x3947234e8AC34369E5AcbBDe816c940E6Ce6F887",
+    "LiquidityLibrary": "0x3272a60dD6972E79BC903E14EA25D8DDcA4c5D4E",
+    "TradingLibrary": "0xCf03BA48deee8515bd4c89170072260F70A22406",
+    "RouterLibrary": "0x0F2141A3b769bFFeb040363F8d685C352172efFa",
+    "Oracle": "0x293080f0Ee633cbfA51796A8566B59b19E41B50c",
+    "Pool": "0xFc943DF08B99Ef4cdb1f98856755e629bB535eeF",
+    "Trading": "0xb75a9B31d47d6daBD9195E82Ed4b22eD1cafEd3D",
+    "Router": "0xB2BCb8850D30EC2bFA8308C312A03f5350BCA548",
+    "TradingEvents": "0x0f22d3212069217fe8095Cc38cD67f8f2435aAb7"
   },
   "proxies": {
-    "OracleProxy": "0xAe4F318e0407317c43d2f57004f533C815B0d07f",
-    "PoolProxy": "0x349172429BDB675475D729eA21480945e70e87cC",
-    "TradingProxy": "0x27bE11d1226bd06f5735bcb8A2bb22490b534C24",
-    "RouterProxy": "0xedcd4dB1FBf23427e2ffFEFb754e171865899ed3"
+    "OracleProxy": "0x293080f0Ee633cbfA51796A8566B59b19E41B50c",
+    "PoolProxy": "0xFc943DF08B99Ef4cdb1f98856755e629bB535eeF",
+    "TradingProxy": "0xb75a9B31d47d6daBD9195E82Ed4b22eD1cafEd3D",
+    "RouterProxy": "0xB2BCb8850D30EC2bFA8308C312A03f5350BCA548"
   },
   "implementations": {
     "OracleImpl": "0x16c8a505904AAfa725b85c0F192dF3B5FE064c01",
-    "PoolImpl": "0xea7A6192027267db31d158ABAEB89911DC639F21",
-    "TradingImpl": "0xb6cb158107832F4a8fF2f24A44970829a746E723",
-    "RouterImpl": "0xAd8D5899dA96904Bc54A2A054553Df31EA255940"
+    "PoolImpl": "0x7f4B60F16bB12a4aA504aD1616F06622d2aC73b2",
+    "TradingImpl": "0x4325DC7AF675428d2eAb2Ff058bb00cFe8761bc7",
+    "RouterImpl": "0xCa962d85e34D288eCdaBA9574F81a4248aA7Ff12"
   },
   "accounts": {
     "deployer": "0xbA5C24084c98A42974f324F377c87Ad44900648E",

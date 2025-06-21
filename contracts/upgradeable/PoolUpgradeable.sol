@@ -59,6 +59,7 @@ contract PoolUpgradeable is Initializable, AccessControlUpgradeable, ReentrancyG
 
     function setRouter(address _router) external onlyRole(DEFAULT_ADMIN_ROLE) {
         router = _router;
+        _grantRole(KEEPER_ROLE, _router);
     }
 
     modifier flashLoanProtection() {
@@ -140,10 +141,11 @@ contract PoolUpgradeable is Initializable, AccessControlUpgradeable, ReentrancyG
         ethBalances[msg.sender] -= amount;
         ethBalance -= amount;
 
-        if (liquidityContributions[msg.sender][address(0)] >= amount) {
-            liquidityContributions[msg.sender][address(0)] -= amount;
-            totalLiquidityContributions[address(0)] -= amount;
-        }
+        uint256 contributionReduction = liquidityContributions[msg.sender][address(0)] >= amount
+            ? amount
+            : liquidityContributions[msg.sender][address(0)];
+        liquidityContributions[msg.sender][address(0)] -= contributionReduction;
+        totalLiquidityContributions[address(0)] -= contributionReduction;
 
         (bool success, ) = msg.sender.call{value: amount}("");
         require(success, "Transfer failed");
@@ -161,10 +163,11 @@ contract PoolUpgradeable is Initializable, AccessControlUpgradeable, ReentrancyG
         ethBalances[user] -= amount;
         ethBalance -= amount;
 
-        if (liquidityContributions[user][address(0)] >= amount) {
-            liquidityContributions[user][address(0)] -= amount;
-            totalLiquidityContributions[address(0)] -= amount;
-        }
+        uint256 contributionReduction = liquidityContributions[user][address(0)] >= amount
+            ? amount
+            : liquidityContributions[user][address(0)];
+        liquidityContributions[user][address(0)] -= contributionReduction;
+        totalLiquidityContributions[address(0)] -= contributionReduction;
 
         (bool success, ) = user.call{value: amount, gas: 2300}("");
         require(success, "Transfer failed");
@@ -181,10 +184,11 @@ contract PoolUpgradeable is Initializable, AccessControlUpgradeable, ReentrancyG
         tokenBalances[msg.sender][token] -= amount;
         totalTokenBalances[token] -= amount;
 
-        if (liquidityContributions[msg.sender][token] >= amount) {
-            liquidityContributions[msg.sender][token] -= amount;
-            totalLiquidityContributions[token] -= amount;
-        }
+        uint256 contributionReduction = liquidityContributions[msg.sender][token] >= amount
+            ? amount
+            : liquidityContributions[msg.sender][token];
+        liquidityContributions[msg.sender][token] -= contributionReduction;
+        totalLiquidityContributions[token] -= contributionReduction;
 
         require(IERC20(token).transfer(msg.sender, amount), "Transfer failed");
 
@@ -202,10 +206,11 @@ contract PoolUpgradeable is Initializable, AccessControlUpgradeable, ReentrancyG
         tokenBalances[user][token] -= amount;
         totalTokenBalances[token] -= amount;
 
-        if (liquidityContributions[user][token] >= amount) {
-            liquidityContributions[user][token] -= amount;
-            totalLiquidityContributions[token] -= amount;
-        }
+        uint256 contributionReduction = liquidityContributions[user][token] >= amount
+            ? amount
+            : liquidityContributions[user][token];
+        liquidityContributions[user][token] -= contributionReduction;
+        totalLiquidityContributions[token] -= contributionReduction;
 
         require(IERC20(token).transfer(user, amount), "Transfer failed");
 
@@ -280,6 +285,13 @@ contract PoolUpgradeable is Initializable, AccessControlUpgradeable, ReentrancyG
 
         if (lpFee > 0) {
             totalFeesAccumulated[token] += lpFee;
+            if (token == address(0)) {
+                ethBalance += lpFee;
+                totalLiquidityContributions[address(0)] += lpFee;
+            } else {
+                totalTokenBalances[token] += lpFee;
+                totalLiquidityContributions[token] += lpFee;
+            }
         }
 
         if (stakingFee > 0 && router != address(0)) {
