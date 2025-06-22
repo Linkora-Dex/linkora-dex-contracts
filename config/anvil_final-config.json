@@ -6,32 +6,32 @@
   },
   "prefix": "anvil_",
   "architecture": "upgradeable-router-centric",
-  "timestamp": "2025-06-22T08:47:51.246Z",
+  "timestamp": "2025-06-22T08:56:57.311Z",
   "contracts": {
-    "AccessControl": "0x5A6e2C6DC6707494Dc63c59Ce9728E522667AE28",
-    "ReentrancyGuard": "0x57b649C0f15D47F8b58c9301D028345B197cf7B9",
-    "PnLCalculator": "0x36Eb37D028A77F1Eb530038A11a8CbF1A7E78541",
-    "PoolLibrary": "0x3947234e8AC34369E5AcbBDe816c940E6Ce6F887",
-    "LiquidityLibrary": "0x3272a60dD6972E79BC903E14EA25D8DDcA4c5D4E",
-    "TradingLibrary": "0xCf03BA48deee8515bd4c89170072260F70A22406",
-    "RouterLibrary": "0x0F2141A3b769bFFeb040363F8d685C352172efFa",
-    "Oracle": "0x293080f0Ee633cbfA51796A8566B59b19E41B50c",
-    "Pool": "0xFc943DF08B99Ef4cdb1f98856755e629bB535eeF",
-    "Trading": "0xb75a9B31d47d6daBD9195E82Ed4b22eD1cafEd3D",
-    "Router": "0xB2BCb8850D30EC2bFA8308C312A03f5350BCA548",
-    "TradingEvents": "0x0f22d3212069217fe8095Cc38cD67f8f2435aAb7"
+    "AccessControl": "0x2ff45846534DB9d51Fd538AACb89bed14dbA3342",
+    "ReentrancyGuard": "0xDBE4795317cc68A051d77740053AF17F71a3fBE8",
+    "PnLCalculator": "0xc4f13b85a61586E6c6153F105DbA89B0d4607038",
+    "PoolLibrary": "0x96CeB00E08Ae7C7339841C00328cB5575Ca4E2c2",
+    "LiquidityLibrary": "0xf3CD43ae2713e54fc2eA57918D46256ed6d73e05",
+    "TradingLibrary": "0x86297ff818071c91fdf7806dbE1bCA0aAd3a0C75",
+    "RouterLibrary": "0x06886d04b36F7125ab54304DC1E8e756c0fabc5E",
+    "Oracle": "0xCf2CbdFd2515255700e5EF91E2E5d8491e60daFC",
+    "Pool": "0xcF901e2ba393f527eea8eF68a48C92236492E9E3",
+    "Trading": "0x15d821c5DF59C4768323519FBc59C60931d75F3A",
+    "Router": "0xCdFBf181B1a0d743AF7c8a75744EEC1dBe67Fd60",
+    "TradingEvents": "0x52Ba41e61D44b8425aBB0AD20E6bCdd49a5BDc8a"
   },
   "proxies": {
-    "OracleProxy": "0x293080f0Ee633cbfA51796A8566B59b19E41B50c",
-    "PoolProxy": "0xFc943DF08B99Ef4cdb1f98856755e629bB535eeF",
-    "TradingProxy": "0xb75a9B31d47d6daBD9195E82Ed4b22eD1cafEd3D",
-    "RouterProxy": "0xB2BCb8850D30EC2bFA8308C312A03f5350BCA548"
+    "OracleProxy": "0xCf2CbdFd2515255700e5EF91E2E5d8491e60daFC",
+    "PoolProxy": "0xcF901e2ba393f527eea8eF68a48C92236492E9E3",
+    "TradingProxy": "0x15d821c5DF59C4768323519FBc59C60931d75F3A",
+    "RouterProxy": "0xCdFBf181B1a0d743AF7c8a75744EEC1dBe67Fd60"
   },
   "implementations": {
     "OracleImpl": "0x16c8a505904AAfa725b85c0F192dF3B5FE064c01",
-    "PoolImpl": "0x7f4B60F16bB12a4aA504aD1616F06622d2aC73b2",
-    "TradingImpl": "0x4325DC7AF675428d2eAb2Ff058bb00cFe8761bc7",
-    "RouterImpl": "0xCa962d85e34D288eCdaBA9574F81a4248aA7Ff12"
+    "PoolImpl": "0x6f4A9EBFF3dC42801E1e569A03DF239513A0A2D2",
+    "TradingImpl": "0xaC64dfbb64D45e5d5CF9aEFe137F6129C7a0CCFF",
+    "RouterImpl": "0x7FbEE42Ed857008De43b9C0873708Bf6ba4D6e7d"
   },
   "accounts": {
     "deployer": "0xbA5C24084c98A42974f324F377c87Ad44900648E",
@@ -51,31 +51,31 @@
   "step": "complete",
   "tokens": {
     "CAPY": {
-      "address": "0x5B4546D4BD3b408325CC3e1030E23A2E1e27e207",
+      "address": "0x1461adDaDd04c7C6C32b74158B9CF254E1d1B99B",
       "decimals": 6,
       "initialPrice": "1",
       "mintAmount": "10000"
     },
     "AXOL": {
-      "address": "0xb50c066A2614dC8397F343429973580146206838",
+      "address": "0x7092598BdDB7837bB99e7b8c0a3A1Dc805D2D846",
       "decimals": 6,
       "initialPrice": "1",
       "mintAmount": "10000"
     },
     "QUOK": {
-      "address": "0x762053bb7dE7dD0DEA3E0B35FB3964F8fc3771Ce",
+      "address": "0x945FC8089419b9b359004C6ED300c56C2B94f07b",
       "decimals": 8,
       "initialPrice": "45000",
       "mintAmount": "10000"
     },
     "PANG": {
-      "address": "0xB3864C2E78320D60a244420964FFaC9fDF5fB89e",
+      "address": "0x4ED0340FC520515660Ad06C19080e65Df3d41b36",
       "decimals": 18,
       "initialPrice": "15",
       "mintAmount": "10000"
     },
     "NARW": {
-      "address": "0xd85431d7C5D958688c6DC46836Ab3AAC2051b00e",
+      "address": "0xB866B6265152B57c2D149d8BBEE30A72E7b47dfc",
       "decimals": 18,
       "initialPrice": "25",
       "mintAmount": "10000"
@@ -98,6 +98,6 @@
     "saveAfterEachStep": true,
     "validateDeployment": true,
     "completed": true,
-    "completedAt": "2025-06-22T08:47:51.246Z"
+    "completedAt": "2025-06-22T08:56:57.311Z"
   }
 }

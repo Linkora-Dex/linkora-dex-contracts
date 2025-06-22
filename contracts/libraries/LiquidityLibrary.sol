@@ -38,16 +38,19 @@ library LiquidityLibrary {
         require(amountA >= amountAMin && amountB >= amountBMin, "Insufficient amounts");
 
         if (tokenA == address(0)) {
+            // ETH + Token ликвидность
             ethBalances[user] -= amountA;
             tokenBalances[user][tokenB] -= amountB;
-            newEthBalance += amountA;
+            // ИСПРАВЛЕНО: ETH остается в пуле, newEthBalance не изменяется
             totalTokenBalances[tokenB] += amountB;
         } else if (tokenB == address(0)) {
+            // Token + ETH ликвидность
             tokenBalances[user][tokenA] -= amountA;
             ethBalances[user] -= amountB;
             totalTokenBalances[tokenA] += amountA;
-            newEthBalance += amountB;
+            // ИСПРАВЛЕНО: ETH остается в пуле, newEthBalance не изменяется
         } else {
+            // Token + Token ликвидность
             tokenBalances[user][tokenA] -= amountA;
             tokenBalances[user][tokenB] -= amountB;
             totalTokenBalances[tokenA] += amountA;
@@ -95,16 +98,19 @@ library LiquidityLibrary {
         require(amountA >= amountAMin && amountB >= amountBMin, "Insufficient amounts");
 
         if (tokenA == address(0)) {
-            newEthBalance -= amountA;
+            // Возвращаем ETH + Token
+            newEthBalance -= amountA;  // ETH уходит из пула
             totalTokenBalances[tokenB] -= amountB;
             ethBalances[user] += amountA;
             tokenBalances[user][tokenB] += amountB;
         } else if (tokenB == address(0)) {
+            // Возвращаем Token + ETH
             totalTokenBalances[tokenA] -= amountA;
-            newEthBalance -= amountB;
+            newEthBalance -= amountB;  // ETH уходит из пула
             tokenBalances[user][tokenA] += amountA;
             ethBalances[user] += amountB;
         } else {
+            // Возвращаем Token + Token
             totalTokenBalances[tokenA] -= amountA;
             totalTokenBalances[tokenB] -= amountB;
             tokenBalances[user][tokenA] += amountA;
