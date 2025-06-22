@@ -225,50 +225,43 @@ library PoolLibrary {
         require(amountIn > 0, "Invalid input amount");
         require(reserveIn > 0 && reserveOut > 0, "Invalid reserves");
 
-        // Случай 1: Одинаковые decimals - простой расчет
-        if (decimalsIn == decimalsOut) {
-            uint256 simpleAmountInWithFee = amountIn * 997;
-            uint256 simpleNumerator = simpleAmountInWithFee * reserveOut;
-            uint256 simpleDenominator = (reserveIn * 1000) + simpleAmountInWithFee;
-            return simpleNumerator / simpleDenominator;
-        }
+        // Приводим все к одной базе для вычислений (используем максимальные decimals)
+        uint8 maxDecimals = decimalsIn > decimalsOut ? decimalsIn : decimalsOut;
+        maxDecimals = maxDecimals > 18 ? maxDecimals : 18; // минимум 18 для точности
 
-        // Случай 2: Разные decimals - используем масштабирование
-        uint256 scaledAmountIn = _scaleToEighteenDecimals(amountIn, decimalsIn);
-        uint256 scaledReserveIn = _scaleToEighteenDecimals(reserveIn, decimalsIn);
-        uint256 scaledReserveOut = _scaleToEighteenDecimals(reserveOut, decimalsOut);
+        uint256 normalizedAmountIn = _normalizeDecimals(amountIn, decimalsIn, maxDecimals);
+        uint256 normalizedReserveIn = _normalizeDecimals(reserveIn, decimalsIn, maxDecimals);
+        uint256 normalizedReserveOut = _normalizeDecimals(reserveOut, decimalsOut, maxDecimals);
 
-        uint256 scaledAmountInWithFee = scaledAmountIn * 997;
-        uint256 scaledNumerator = scaledAmountInWithFee * scaledReserveOut;
-        uint256 scaledDenominator = (scaledReserveIn * 1000) + scaledAmountInWithFee;
-        uint256 scaledAmountOut = scaledNumerator / scaledDenominator;
+        // Стандартная формула AMM с комиссией 0.3%
+        uint256 amountInWithFee = normalizedAmountIn * 997;
+        uint256 numerator = amountInWithFee * normalizedReserveOut;
+        uint256 denominator = (normalizedReserveIn * 1000) + amountInWithFee;
+        uint256 normalizedAmountOut = numerator / denominator;
 
-        amountOut = _scaleFromEighteenDecimals(scaledAmountOut, decimalsOut);
+        // Возвращаем в нужные decimals
+        amountOut = _denormalizeDecimals(normalizedAmountOut, maxDecimals, decimalsOut);
     }
 
-    function _scaleToEighteenDecimals(
-        uint256 amount,
-        uint8 decimals
-    ) internal pure returns (uint256) {
-        if (decimals == 18) {
+    function _normalizeDecimals(uint256 amount, uint8 fromDecimals, uint8 toDecimals) internal pure returns (uint256) {
+        if (fromDecimals == toDecimals) {
             return amount;
-        } else if (decimals < 18) {
-            return amount * (10 ** (18 - decimals));
+        } else if (fromDecimals < toDecimals) {
+            return amount * (10 ** (toDecimals - fromDecimals));
         } else {
-            return amount / (10 ** (decimals - 18));
+            return amount / (10 ** (fromDecimals - toDecimals));
         }
     }
 
-    function _scaleFromEighteenDecimals(
-        uint256 amount,
-        uint8 decimals
-    ) internal pure returns (uint256) {
-        if (decimals == 18) {
+    function _denormalizeDecimals(uint256 amount, uint8 fromDecimals, uint8 toDecimals) internal pure returns (uint256) {
+        if (fromDecimals == toDecimals) {
             return amount;
-        } else if (decimals < 18) {
-            return amount / (10 ** (18 - decimals));
+        } else if (fromDecimals > toDecimals) {
+            return amount / (10 ** (fromDecimals - toDecimals));
         } else {
-            return amount * (10 ** (decimals - 18));
+            return amount * (10 ** (toDecimals - fromDecimals));
         }
     }
+
+
 }
