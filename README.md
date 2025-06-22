@@ -10,6 +10,9 @@ npm install
 
 npx hardhat clean
 
+rm -rf artifacts/ cache/ node_modules/.cache/
+
+
 # Compile contracts
 npm run compile
 
@@ -28,6 +31,12 @@ npm run prod:pools
 or
 
 npm run prod:deploy:config
+
+
+Verifi
+npm run infoPool
+
+
 
 # Start services
 npm run price-generator-anvil    # Price generator
