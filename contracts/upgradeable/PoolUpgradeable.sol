@@ -302,6 +302,8 @@ contract PoolUpgradeable is Initializable, AccessControlUpgradeable, ReentrancyG
         emit FeeDistributed(token, lpFee, stakingFee, block.timestamp);
     }
 
+
+
     function claimFees(address token) external nonReentrant {
         uint256 userContribution = liquidityContributions[msg.sender][token];
         require(userContribution > 0, "No liquidity contribution");

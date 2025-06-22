@@ -63,6 +63,8 @@ async function addLiquidity(tokenConfig, config, gasSettings) {
         await new Promise(resolve => setTimeout(resolve, 500));
     }
 
+
+
     console.log("Initial liquidity added to all pools");
 }
 
@@ -83,7 +85,16 @@ async function testBasicFunctionality(tokenConfig, config, gasSettings) {
     for (const [symbol, tokenData] of Object.entries(tokenConfig.tokens)) {
         const balance = await pool.getBalance(deployer.address, tokenData.address);
         console.log(`Deployer ${symbol} balance in pool: ${ethers.formatUnits(balance, tokenData.decimals)}`);
+
+        const actualBalance = await pool.totalTokenBalances(tokenData.address);
+        console.log(`Verified ${symbol} pool balance: ${ethers.formatUnits(actualBalance, tokenData.decimals)}`);
+
+
     }
+
+
+
+
 
     console.log("Pool functionality verified");
 }

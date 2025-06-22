@@ -8,8 +8,14 @@ Decentralized exchange with margin trading and upgradeable architecture
 # Install dependencies
 npm install
 
+npx hardhat clean
+
 # Compile contracts
 npm run compile
+
+or 
+
+npx hardhat compile --force
 
 # Start local network
 npm run node

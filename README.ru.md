@@ -8,8 +8,14 @@
 # Установка зависимостей
 npm install
 
+npx hardhat clean
+
 # Компиляция контрактов
 npm run compile
+
+or 
+
+npx hardhat compile --force
 
 # Запуск локальной сети
 npm run node
