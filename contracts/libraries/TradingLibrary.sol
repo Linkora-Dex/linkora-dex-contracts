@@ -6,6 +6,16 @@ import "../upgradeable/OracleUpgradeable.sol";
 
 library TradingLibrary {
    enum OrderType {LIMIT, STOP_LOSS, MARKET, CONDITIONAL}
+    /*
+    MARKET и CONDITIONAL - Определены в enum, но логика исполнения не реализована
+    LIMIT(0) - лимитный ордер
+    STOP_LOSS(1) - стоп-лосс ордер
+    MARKET(2) - рыночный ордер (не реализован и не нужен)
+    CONDITIONAL(3) - условный ордер (не реализован)
+    Система спроектирована для отложенных ордеров
+    MARKET ордер не нужен в отложенной системе(MARKET ордер должен исполняться мгновенно)
+
+    */
    enum PositionType {LONG, SHORT}
 
    struct Order {

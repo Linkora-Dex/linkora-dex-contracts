@@ -42,6 +42,7 @@ contract PoolUpgradeable is Initializable, AccessControlUpgradeable, ReentrancyG
     event FeeDistributed(address indexed token, uint256 lpFee, uint256 stakingFee, uint256 timestamp);
     event FeeClaimed(address indexed user, address indexed token, uint256 amount);
     event TradingDiscountApplied(address indexed user, uint256 originalFee, uint256 discountedFee);
+    event LiquidationDistributed(address indexed token, uint256 amount, address indexed fromUser, uint256 timestamp);
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
@@ -502,7 +503,30 @@ contract PoolUpgradeable is Initializable, AccessControlUpgradeable, ReentrancyG
         feeToStakersPercent = _percent;
     }
 
+    function distributeToLiquidityProviders(address token, uint256 amount, address fromUser)
+        external onlyRole(KEEPER_ROLE) nonReentrant {
+        require(amount > 0, "Amount must be greater than 0");
+
+        if (token == address(0)) {
+            require(ethBalances[fromUser] >= amount, "Insufficient ETH balance");
+            ethBalances[fromUser] -= amount;
+
+            // Add to total pool liquidity
+            ethBalance += amount;
+            totalLiquidityContributions[address(0)] += amount;
+        } else {
+            require(tokenBalances[fromUser][token] >= amount, "Insufficient token balance");
+            tokenBalances[fromUser][token] -= amount;
+
+            // Add to total pool liquidity
+            totalTokenBalances[token] += amount;
+            totalLiquidityContributions[token] += amount;
+        }
+
+        emit LiquidationDistributed(token, amount, fromUser, block.timestamp);
+    }
+
     function version() external pure returns (string memory) {
-        return "1.1.0";
+        return "1.2.0";
     }
 }

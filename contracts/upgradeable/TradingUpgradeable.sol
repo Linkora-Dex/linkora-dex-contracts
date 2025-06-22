@@ -238,25 +238,28 @@ contract TradingUpgradeable is Initializable, AccessControlUpgradeable, Reentran
        emit PositionClosed(positionId, user, pnl);
    }
 
-   function liquidatePosition(uint256 positionId) external nonReentrant {
-       TradingLibrary.Position storage position = positions[positionId];
-       if (!position.isOpen) revert TradingLibrary.PositionClosed();
+    function liquidatePosition(uint256 positionId) external nonReentrant {
+        TradingLibrary.Position storage position = positions[positionId];
+        if (!position.isOpen) revert TradingLibrary.PositionClosed();
 
-       uint256 currentPrice = oracle.getPrice(position.token);
-       (bool canLiquidate, int256 pnlPercent) = TradingLibrary.isPositionLiquidatable(position, currentPrice);
+        uint256 currentPrice = oracle.getPrice(position.token);
+        (bool canLiquidate, int256 pnlPercent) = TradingLibrary.isPositionLiquidatable(position, currentPrice);
 
-       if (!canLiquidate) revert TradingLibrary.NotLiquidatable();
+        if (!canLiquidate) revert TradingLibrary.NotLiquidatable();
 
-       pool.unlockFunds(position.user, address(0), position.collateralAmount);
+        uint256 liquidationReward = position.collateralAmount / 10; // 10% to liquidator
+        uint256 remainingCollateral = position.collateralAmount - liquidationReward;
 
-       uint256 liquidationReward = position.collateralAmount / 20;
-       if (liquidationReward > 0) {
-           pool.transferFunds(position.user, msg.sender, address(0), liquidationReward);
-       }
+        // Unlock only the liquidation reward for the liquidator
+        pool.unlockFunds(position.user, address(0), liquidationReward);
+        pool.transferFunds(position.user, msg.sender, address(0), liquidationReward);
 
-       position.isOpen = false;
-       emit PositionLiquidated(positionId, position.user, msg.sender, pnlPercent);
-   }
+        // Distribute remaining collateral to LP providers
+        pool.distributeToLiquidityProviders(address(0), remainingCollateral, position.user);
+
+        position.isOpen = false;
+        emit PositionLiquidated(positionId, position.user, msg.sender, pnlPercent);
+    }
 
    function shouldExecuteOrder(uint256 orderId) public view returns (bool) {
        return TradingLibrary.shouldExecuteOrder(address(oracle), orders[orderId]);
