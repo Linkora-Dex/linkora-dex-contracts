@@ -25,6 +25,7 @@ library PoolLibrary {
         newEthBalance = ethBalance;
 
         if (tokenIn == address(0)) {
+            // ETH → Token swap
             require(tokenOut != address(0), "Invalid token pair");
             require(ethBalances[user] >= amountIn, "Insufficient ETH balance");
 
@@ -37,11 +38,14 @@ library PoolLibrary {
             require(amountOut >= minAmountOut, "Slippage too high");
             require(tokenReserve >= amountOut, "Insufficient token liquidity");
 
+            // ИСПРАВЛЕННАЯ ЛОГИКА: ETH остается в пуле, токены уходят из пула
             ethBalances[user] -= amountIn;
             tokenBalances[user][tokenOut] += amountOut;
-            newEthBalance += amountIn;
+            // newEthBalance остается тем же - ETH от пользователя остается в пуле
             totalTokenBalances[tokenOut] -= amountOut;
+
         } else if (tokenOut == address(0)) {
+            // Token → ETH swap
             require(tokenIn != address(0), "Invalid token pair");
             require(tokenBalances[user][tokenIn] >= amountIn, "Insufficient token balance");
 
@@ -54,11 +58,14 @@ library PoolLibrary {
             require(amountOut >= minAmountOut, "Slippage too high");
             require(ethReserve >= amountOut, "Insufficient ETH liquidity");
 
+            // ИСПРАВЛЕННАЯ ЛОГИКА: токены остаются в пуле, ETH уходит из пула
             tokenBalances[user][tokenIn] -= amountIn;
             ethBalances[user] += amountOut;
-            totalTokenBalances[tokenIn] += amountIn;
-            newEthBalance -= amountOut;
+            totalTokenBalances[tokenIn] += amountIn; // токены от пользователя остаются в пуле
+            newEthBalance -= amountOut; // ETH уходит из пула к пользователю
+
         } else {
+            // Token → Token swap
             require(tokenIn != address(0) && tokenOut != address(0), "Invalid token pair");
             require(tokenBalances[user][tokenIn] >= amountIn, "Insufficient token balance");
 
@@ -72,6 +79,7 @@ library PoolLibrary {
             require(amountOut >= minAmountOut, "Slippage too high");
             require(tokenOutReserve >= amountOut, "Insufficient token liquidity");
 
+            // Token → Token: один токен поступает в пул, другой уходит из пула
             tokenBalances[user][tokenIn] -= amountIn;
             tokenBalances[user][tokenOut] += amountOut;
             totalTokenBalances[tokenIn] += amountIn;
@@ -113,8 +121,9 @@ library PoolLibrary {
 
             ethBalances[user] -= amountIn;
             tokenBalances[user][tokenOut] += amountOut;
-            newEthBalance += amountIn;
+            // newEthBalance остается тем же
             totalTokenBalances[tokenOut] -= amountOut;
+
         } else if (tokenOut == address(0)) {
             require(tokenIn != address(0), "Invalid token pair");
             require(tokenBalances[user][tokenIn] >= amountIn, "Insufficient token balance");
@@ -133,6 +142,7 @@ library PoolLibrary {
             ethBalances[user] += amountOut;
             totalTokenBalances[tokenIn] += amountIn;
             newEthBalance -= amountOut;
+
         } else {
             require(tokenIn != address(0) && tokenOut != address(0), "Invalid token pair");
             require(tokenBalances[user][tokenIn] >= amountIn, "Insufficient token balance");
@@ -205,14 +215,6 @@ library PoolLibrary {
         amountOut = numerator / denominator;
     }
 
-    /**
-     * @dev ИСПРАВЛЕННАЯ функция расчета с поддержкой разных decimals
-     * Пошаговая математика:
-     * 1. Если decimals одинаковые - используем простую формулу
-     * 2. Если разные - приводим к общему базису через масштабирование
-     * 3. Выполняем AMM расчет в едином базисе
-     * 4. Приводим результат к нужной точности
-     */
     function _calculateAmountOutWithDecimals(
         uint256 amountIn,
         uint256 reserveIn,
@@ -225,35 +227,25 @@ library PoolLibrary {
 
         // Случай 1: Одинаковые decimals - простой расчет
         if (decimalsIn == decimalsOut) {
-            uint256 amountInWithFee = amountIn * 997;
-            uint256 numerator = amountInWithFee * reserveOut;
-            uint256 denominator = (reserveIn * 1000) + amountInWithFee;
-            return numerator / denominator;
+            uint256 simpleAmountInWithFee = amountIn * 997;
+            uint256 simpleNumerator = simpleAmountInWithFee * reserveOut;
+            uint256 simpleDenominator = (reserveIn * 1000) + simpleAmountInWithFee;
+            return simpleNumerator / simpleDenominator;
         }
 
         // Случай 2: Разные decimals - используем масштабирование
-        // Приводим все к базису 18 decimals для точности
         uint256 scaledAmountIn = _scaleToEighteenDecimals(amountIn, decimalsIn);
         uint256 scaledReserveIn = _scaleToEighteenDecimals(reserveIn, decimalsIn);
         uint256 scaledReserveOut = _scaleToEighteenDecimals(reserveOut, decimalsOut);
 
-        // AMM расчет в едином базисе
-        uint256 amountInWithFee = scaledAmountIn * 997;
-        uint256 numerator = amountInWithFee * scaledReserveOut;
-        uint256 denominator = (scaledReserveIn * 1000) + amountInWithFee;
-        uint256 scaledAmountOut = numerator / denominator;
+        uint256 scaledAmountInWithFee = scaledAmountIn * 997;
+        uint256 scaledNumerator = scaledAmountInWithFee * scaledReserveOut;
+        uint256 scaledDenominator = (scaledReserveIn * 1000) + scaledAmountInWithFee;
+        uint256 scaledAmountOut = scaledNumerator / scaledDenominator;
 
-        // Приводим результат к нужной точности
         amountOut = _scaleFromEighteenDecimals(scaledAmountOut, decimalsOut);
     }
 
-    /**
-     * @dev Приводит значение к 18 decimals
-     * Математика:
-     * - Если decimals < 18: умножаем на 10^(18-decimals)
-     * - Если decimals = 18: возвращаем как есть
-     * - Если decimals > 18: делим на 10^(decimals-18)
-     */
     function _scaleToEighteenDecimals(
         uint256 amount,
         uint8 decimals
@@ -263,18 +255,10 @@ library PoolLibrary {
         } else if (decimals < 18) {
             return amount * (10 ** (18 - decimals));
         } else {
-            // Редкий случай: токены с > 18 decimals
             return amount / (10 ** (decimals - 18));
         }
     }
 
-    /**
-     * @dev Приводит значение от 18 decimals к нужной точности
-     * Математика:
-     * - Если decimals < 18: делим на 10^(18-decimals)
-     * - Если decimals = 18: возвращаем как есть
-     * - Если decimals > 18: умножаем на 10^(decimals-18)
-     */
     function _scaleFromEighteenDecimals(
         uint256 amount,
         uint8 decimals
@@ -284,7 +268,6 @@ library PoolLibrary {
         } else if (decimals < 18) {
             return amount / (10 ** (18 - decimals));
         } else {
-            // Редкий случай: токены с > 18 decimals
             return amount * (10 ** (decimals - 18));
         }
     }

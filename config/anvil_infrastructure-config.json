@@ -6,7 +6,7 @@
   },
   "prefix": "anvil_",
   "architecture": "upgradeable-router-centric",
-  "timestamp": "2025-06-22T08:36:54.970Z",
+  "timestamp": "2025-06-22T08:47:43.792Z",
   "contracts": {
     "AccessControl": "0x5A6e2C6DC6707494Dc63c59Ce9728E522667AE28",
     "ReentrancyGuard": "0x57b649C0f15D47F8b58c9301D028345B197cf7B9",
